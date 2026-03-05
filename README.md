@@ -1,4 +1,5 @@
 THE AUSTRALIAN STUDY LIBARY
+
 The Australian Study Library is a free online resource designed to help students in Years 9–12 prepare for exams and improve their understanding of key subjects. The platform provides quick access to official past exam papers from major Australian education systems including VCE (Victoria), HSC (New South Wales), QCE (Queensland), and WACE (Western Australia). Students can easily search and browse past assessments to practise exam-style questions and become familiar with real test formats.
 
 In addition to exam papers, the website includes built-in study tools to support learning. Students can search any topic to get a quick explanation, watch related video lessons, generate flashcards for revision, and test their knowledge with simple quiz questions. The platform also provides useful study tips and encourages effective learning techniques such as spaced repetition, active recall, and practising under exam conditions.
