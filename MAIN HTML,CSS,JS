@@ -104,53 +104,83 @@ color:#888;
 
 <script>
 
-function searchPapers(){
-let input=document.getElementById("search").value.toLowerCase();
-let papers=document.getElementsByClassName("paper");
+document.addEventListener("DOMContentLoaded", () => {
 
-for(let i=0;i<papers.length;i++){
-let text=papers[i].innerText.toLowerCase();
-papers[i].style.display=text.includes(input)?"":"none";
+const searchInput = document.getElementById("search")
+const studyInput = document.getElementById("studySearch")
+
+const wikiResult = document.getElementById("wikiResult")
+const yt = document.getElementById("yt")
+const flashcards = document.getElementById("flashcards")
+const tipBox = document.getElementById("tip")
+
+const papers = document.getElementsByClassName("paper")
+
+window.searchPapers = function(){
+
+const input = searchInput.value.toLowerCase()
+
+for(let paper of papers){
+
+const text = paper.innerText.toLowerCase()
+
+paper.style.display = text.includes(input) ? "" : "none"
+
 }
+
 }
 
 
-async function wikiSearch(){
+window.wikiSearch = async function(){
 
-let query=document.getElementById("studySearch").value
+const query = studyInput.value.trim()
 
-let url=`https://en.wikipedia.org/api/rest_v1/page/summary/${query}`
+if(!query) return
 
-let res=await fetch(url)
+try{
 
-let data=await res.json()
+const url = `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(query)}`
 
-document.getElementById("wikiResult").innerHTML=
+const res = await fetch(url)
+
+if(!res.ok) throw new Error()
+
+const data = await res.json()
+
+wikiResult.innerHTML =
 "<b>"+data.title+"</b><p>"+data.extract+"</p>"
 
+}catch{
+
+wikiResult.innerHTML = "<p>Topic not found. Try another search.</p>"
+
+}
+
 }
 
 
+window.youtubeSearch = function(){
 
-function youtubeSearch(){
+const query = studyInput.value.trim()
 
-let query=document.getElementById("studySearch").value
+if(!query) return
 
-let embed=
-`https://www.youtube.com/embed?listType=search&list=${query}+lesson`
+const embed =
+`https://www.youtube.com/embed?listType=search&list=${encodeURIComponent(query)}+lesson`
 
-document.getElementById("yt").innerHTML=
+yt.innerHTML =
 `<iframe width="100%" height="315" src="${embed}" frameborder="0" allowfullscreen></iframe>`
 
 }
 
 
+window.generateFlashcards = function(){
 
-function generateFlashcards(){
+const topic = studyInput.value.trim()
 
-let topic=document.getElementById("studySearch").value
+if(!topic) return
 
-let cards=[
+const cards = [
 `Define ${topic}`,
 `Explain the main concept of ${topic}`,
 `What are 3 key facts about ${topic}?`,
@@ -158,21 +188,16 @@ let cards=[
 `Give an example of ${topic}`
 ]
 
-let html=""
-
-cards.forEach(c=>{
-html+=`<p>🧠 ${c}</p>`
-})
-
-document.getElementById("flashcards").innerHTML=html
+flashcards.innerHTML = cards
+.map(c => `<p>🧠 ${c}</p>`)
+.join("")
 
 }
 
 
+window.randomTip = function(){
 
-function randomTip(){
-
-let tips=[
+const tips = [
 "Study 25 minutes then take a 5 minute break (Pomodoro).",
 "Teach the topic to someone else to improve retention.",
 "Do past exam papers under timed conditions.",
@@ -181,11 +206,13 @@ let tips=[
 "Sleep improves memory consolidation."
 ]
 
-let tip=tips[Math.floor(Math.random()*tips.length)]
+const tip = tips[Math.floor(Math.random() * tips.length)]
 
-document.getElementById("tip").innerHTML="💡 "+tip
+tipBox.innerHTML = "💡 " + tip
 
 }
+
+})
 
 </script>
 
@@ -216,7 +243,6 @@ document.getElementById("tip").innerHTML="💡 "+tip
 
 </div>
 
-
 <div class="state">◦ Victoria (VIC)</div>
 
 <details>
@@ -230,7 +256,6 @@ VCE Past Exams (All Subjects)
 </div>
 
 </details>
-
 
 <div class="state">◦ New South Wales (NSW)</div>
 
@@ -246,7 +271,6 @@ HSC Past Exam Papers
 
 </details>
 
-
 <div class="state">◦ Queensland (QLD)</div>
 
 <details>
@@ -260,7 +284,6 @@ QCE External Exam Papers
 </div>
 
 </details>
-
 
 <div class="state">◦ Western Australia (WA)</div>
 
@@ -276,10 +299,9 @@ WACE Past Exam Papers
 
 </details>
 
-
 <footer>
 
-Minimal AU Exam Library · Free Study Tools · Updated 2026
+AU Exam Library · Free Study Tools · Updated 2026
 
 </footer>
 
